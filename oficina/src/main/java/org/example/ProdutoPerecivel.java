@@ -9,16 +9,16 @@ public class ProdutoPerecivel extends Produto {
     private static final double DESCONTO = 0.25;
     LocalDate dataDeValidade;
     // Construtores
-    public ProdutoPerecivel(String desc, double precoCusto, double margemLucro, LocalDate dataDeValidade) {
-        super(desc, precoCusto, margemLucro);
+    public ProdutoPerecivel(String desc, double precoCusto, double margemLucro, LocalDate dataDeValidade, int quantidadeEmEstoque) {
+        super(desc, precoCusto, margemLucro, quantidadeEmEstoque);
         if (dataDeValidade.isBefore(LocalDate.now())) {
             throw new IllegalArgumentException("A data de validade não pode ser anterior à data atual");
         }
         this.dataDeValidade = dataDeValidade;
     }
 
-    public ProdutoPerecivel(String desc, double precoCusto, LocalDate dataDeValidade) {
-        super(desc, precoCusto);
+    public ProdutoPerecivel(String desc, double precoCusto, LocalDate dataDeValidade, int quantidadeEmEstoque) {
+        super(desc, precoCusto, quantidadeEmEstoque);
         this.dataDeValidade = dataDeValidade;
     }
 
@@ -70,6 +70,7 @@ public class ProdutoPerecivel extends Produto {
         String precoFormatado = String.format("%.2f", this.getPrecoCusto()).replace(",",".");
         String margemFormatada = String.format("%.2f", this.getMargemLucro()).replace(",",".");
         String dataFormatada = formato.format(dataDeValidade);
-        return ("2;%s;%s;%s;%s".formatted(getDescricao(), precoFormatado, margemFormatada, dataFormatada));
+        String quantidadeFormatada = String.valueOf(this.getQuantidadeEmEstoque());
+        return ("2;%s;%s;%s;%s;%s".formatted(getDescricao(), precoFormatado, margemFormatada, dataFormatada, quantidadeFormatada));
     }
 }

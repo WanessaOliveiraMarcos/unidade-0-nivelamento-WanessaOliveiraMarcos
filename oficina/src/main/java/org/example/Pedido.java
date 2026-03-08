@@ -2,6 +2,8 @@ package org.example;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 
+import org.example.exceptions.EstoqueInsuficienteException;
+
 public class Pedido {
 
 	/** Quantidade máxima de produto de um pedido */
@@ -32,13 +34,29 @@ public class Pedido {
 	
 	
 	public boolean incluirItem(ItemDePedido novo) {
-		
+
+		// Primeiro procura se o item já existe
+		for (ItemDePedido item : itens) {
+			if (item != null && item.equals(novo)) {
+				try {
+					item.aumentarQuantidade(novo.getQuantidade());
+				} catch (EstoqueInsuficienteException e) {
+					System.err.println("Estoque insuficiente para aumentar a quantidade do item: " + e.getMessage());
+					return false;
+				}
+				return true;
+			}
+		}
+
+		// Se não encontrou, tenta adicionar novo item
 		if (quantItens < MAX_ITENS) {
 			itens[quantItens++] = novo;
 			return true;
 		}
+
 		return false;
 	}
+	
 	
 	/**
      * Calcula e retorna o valor final do pedido (soma do valor de venda de todos os produtos do pedido).

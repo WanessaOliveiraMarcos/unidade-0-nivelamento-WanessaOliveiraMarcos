@@ -141,8 +141,10 @@ public class Comercio {
             System.out.println("Digite a margem de lucro do produto (em percentual, ex: 20 para 20%): ");
             String margemTexto = teclado.nextLine().replace(",", ".");
             double margemLucro = Double.parseDouble(margemTexto)/ 100.0;
+            System.out.println("Digite a quantidade em estoque do produto: ");
+            int quantidadeEmEstoque = Integer.parseInt(teclado.nextLine());
             if (tipoProduto == 1) {
-                ProdutoNaoPerecivel novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+                ProdutoNaoPerecivel novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
                 produtosCadastrados[quantosProdutos] = novoProduto;
                 quantosProdutos++;
                 salvarProdutos(nomeArquivoDados);
@@ -151,7 +153,7 @@ public class Comercio {
                 String dataTexto = teclado.nextLine();
                 DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
                 LocalDate dataValidade = LocalDate.parse(dataTexto, formatter);
-                ProdutoPerecivel novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, dataValidade);
+                ProdutoPerecivel novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, dataValidade, quantidadeEmEstoque);
                 produtosCadastrados[quantosProdutos] = novoProduto;
                 quantosProdutos++;
                 salvarProdutos(nomeArquivoDados);

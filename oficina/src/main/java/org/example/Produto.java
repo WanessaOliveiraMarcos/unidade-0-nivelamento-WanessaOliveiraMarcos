@@ -9,6 +9,7 @@ public abstract class Produto {
 	private String descricao;
 	private double precoCusto;
 	private double margemLucro;
+	private int quantidadeEmEstoque;
 	
 	/**
      * Inicializador privado. Os valores default, em caso de erro, são:
@@ -17,12 +18,13 @@ public abstract class Produto {
      * @param precoCusto Preço do produto (mínimo 0.01)
      * @param margemLucro Margem de lucro (mínimo 0.01)
      */
-	private void init(String desc, double precoCusto, double margemLucro) {
+	private void init(String desc, double precoCusto, double margemLucro, int quantidadeEmEstoque) {
 		
 		if ((desc.length() >= 3) && (precoCusto > 0.0) && (margemLucro > 0.0)) {
 			descricao = desc;
 			this.precoCusto = precoCusto;
 			this.margemLucro = margemLucro;
+			this.quantidadeEmEstoque = quantidadeEmEstoque;
 		} else {
 			throw new IllegalArgumentException("Valores inválidos para os dados do produto.");
 		}
@@ -35,8 +37,8 @@ public abstract class Produto {
      * @param precoCusto Preço do produto (mínimo 0.01)
      * @param margemLucro Margem de lucro (mínimo 0.01)
      */
-	public Produto(String desc, double precoCusto, double margemLucro) {
-		init(desc, precoCusto, margemLucro);
+	public Produto(String desc, double precoCusto, double margemLucro, int quantidadeEmEstoque) {
+		init(desc, precoCusto, margemLucro, quantidadeEmEstoque);
 	}
 	
 	/**
@@ -46,8 +48,8 @@ public abstract class Produto {
      * @param desc Descrição do produto (mínimo de 3 caracteres)
      * @param precoCusto Preço do produto (mínimo 0.01)
      */
-	public Produto(String desc, double precoCusto) {
-		init(desc, precoCusto, MARGEM_PADRAO);
+	public Produto(String desc, double precoCusto, int quantidadeEmEstoque) {
+		init(desc, precoCusto, MARGEM_PADRAO, quantidadeEmEstoque);
 	}
 	
 	//Getters e Setters
@@ -68,6 +70,12 @@ public abstract class Produto {
 	}
 	public void setMargemLucro(double margemLucro) {
 		this.margemLucro = margemLucro;
+	}
+	public int getQuantidadeEmEstoque() {
+		return quantidadeEmEstoque;
+	}
+	public void setQuantidadeEmEstoque(int quantidadeEmEstoque) {		
+		this.quantidadeEmEstoque = quantidadeEmEstoque;
 	}
 	 /**
      * Retorna o valor de venda do produto, considerando seu preço de custo e margem de lucro.
@@ -123,10 +131,12 @@ public abstract class Produto {
 		double precoCusto = Double.parseDouble(atributos[2]);
 		double margemLucro = Double.parseDouble(atributos[3]);
 		if(tipoProduto == 1){
-			novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro);
+			int quantidadeEmEstoque = Integer.parseInt(atributos[4]);
+			novoProduto = new ProdutoNaoPerecivel(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
 		} else if (tipoProduto == 2){
 			String dataValidade = atributos[4];
-			novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formatoData));
+			int quantidadeEmEstoque = Integer.parseInt(atributos[5]);
+			novoProduto = new ProdutoPerecivel(descricao, precoCusto, margemLucro, LocalDate.parse(dataValidade, formatoData), quantidadeEmEstoque);
 		}
 		return novoProduto;
 	}

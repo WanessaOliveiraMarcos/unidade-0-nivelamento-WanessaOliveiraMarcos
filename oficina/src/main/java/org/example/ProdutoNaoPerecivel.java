@@ -2,12 +2,12 @@ package org.example;
 import java.time.format.DateTimeFormatter;
 
 public class ProdutoNaoPerecivel extends Produto{
-    public ProdutoNaoPerecivel (String descricao, double precoCusto, double margemLucro){
-        super(descricao, precoCusto, margemLucro);
+    public ProdutoNaoPerecivel (String descricao, double precoCusto, double margemLucro, int quantidadeEmEstoque){
+        super(descricao, precoCusto, margemLucro, quantidadeEmEstoque);
     }
 
-    public ProdutoNaoPerecivel(String descricao, double precoCusto){
-        super(descricao, precoCusto);
+    public ProdutoNaoPerecivel(String descricao, double precoCusto, int quantidadeEmEstoque){
+        super(descricao, precoCusto, quantidadeEmEstoque);
     }
 
     @Override
@@ -24,6 +24,7 @@ public class ProdutoNaoPerecivel extends Produto{
     public String gerarDadosTexto(){
         String precoFormatado = String.format("%.2f", this.getPrecoCusto()).replace(",",".");
         String margemFormatada = String.format("%.2f", this.getMargemLucro()).replace(",",".");
-        return ("1;%s;%s;%s".formatted(getDescricao(), precoFormatado, margemFormatada));
+        String quantidadeFormatada = String.valueOf(this.getQuantidadeEmEstoque());
+        return ("1;%s;%s;%s;%s".formatted(getDescricao(), precoFormatado, margemFormatada, quantidadeFormatada));
     }
 }
